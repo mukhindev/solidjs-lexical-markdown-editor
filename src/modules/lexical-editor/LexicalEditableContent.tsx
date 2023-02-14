@@ -3,14 +3,14 @@ import { Component, onMount } from "solid-js";
 import { useLexicalEditor } from "./LexicalComposer";
 
 export const LexicalEditableContent: Component = () => {
-  let ref: HTMLDivElement;
+  let rootElement: HTMLDivElement | undefined;
   let isEditable = true;
 
   const getEditor = useLexicalEditor();
 
   onMount(() => {
-    getEditor()?.setRootElement(ref);
+    getEditor()?.setRootElement(rootElement!);
   });
 
-  return <div contentEditable={isEditable} ref={ref} />;
+  return <div contentEditable={isEditable} ref={rootElement} />;
 };

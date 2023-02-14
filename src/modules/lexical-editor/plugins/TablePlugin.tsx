@@ -14,13 +14,12 @@ import { useLexicalEditor } from "../LexicalComposer";
 
 import styles from "./TablePlugin.module.scss";
 
-const I_C = createCommand("I_C");
-
-const D_T = createCommand("D_T");
+const INSERT_TABLE_COLUMN = createCommand("INSERT_TABLE_COLUMN");
+const REMOVE_TABLE = createCommand("REMOVE_TABLE");
 
 export const TablePlugin = () => {
   const getEditor = useLexicalEditor();
-  let cellButtonElement: HTMLDivElement;
+  let cellActionsElement: HTMLDivElement | undefined;
 
   const [getTableNode, setTableNode] = createSignal<TableNode | null>(null);
 
@@ -32,7 +31,7 @@ export const TablePlugin = () => {
 
     if (editor) {
       editor.registerCommand(
-        I_C,
+        INSERT_TABLE_COLUMN,
         () => {
           const tableNode = getTableNode();
 
@@ -48,7 +47,7 @@ export const TablePlugin = () => {
       );
 
       editor.registerCommand(
-        D_T,
+        REMOVE_TABLE,
         () => {
           const tableNode = getTableNode();
 
@@ -84,9 +83,7 @@ export const TablePlugin = () => {
   createEffect(() => {
     const editor = getEditor();
 
-    if (editor) {
-      console.log(getTableNode());
-
+    if (editor && cellActionsElement) {
       const tableCellNode = getTableCellNode();
 
       if (tableCellNode) {
@@ -96,12 +93,12 @@ export const TablePlugin = () => {
         const tableCellRect = tableCellNodeElement?.getBoundingClientRect();
 
         if (tableCellRect) {
-          cellButtonElement.style.opacity = "1";
-          cellButtonElement.style.top = `${tableCellRect.top}px`;
-          cellButtonElement.style.left = `${tableCellRect.right}px`;
+          cellActionsElement.style.opacity = "1";
+          cellActionsElement.style.top = `${tableCellRect.top}px`;
+          cellActionsElement.style.left = `${tableCellRect.right}px`;
         }
       } else {
-        cellButtonElement.style.opacity = "0";
+        cellActionsElement.style.opacity = "0";
       }
     }
   });
@@ -111,15 +108,15 @@ export const TablePlugin = () => {
   }
 
   const insertTableColumn = () => {
-    getEditor()?.dispatchCommand(I_C, undefined);
+    getEditor()?.dispatchCommand(INSERT_TABLE_COLUMN, undefined);
   };
 
   const deleteTable = () => {
-    getEditor()?.dispatchCommand(D_T, undefined);
+    getEditor()?.dispatchCommand(REMOVE_TABLE, undefined);
   };
 
   return (
-    <div class={styles.TablePlugin} ref={cellButtonElement}>
+    <div class={styles.TablePlugin} ref={cellActionsElement}>
       TablePlugin
       <button onClick={insertTableColumn}>+</button>
       <button onClick={deleteTable}>x</button>

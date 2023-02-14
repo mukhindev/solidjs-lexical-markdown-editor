@@ -22,7 +22,6 @@ export const LexicalComposer: Component<{
   initialConfig: EditorConfig;
   children: JSX.Element;
 }> = (props) => {
-  let rootElement: HTMLDivElement;
   const [getEditor] = createSignal(createEditor(props.initialConfig));
 
   onMount(() => {
@@ -31,9 +30,7 @@ export const LexicalComposer: Component<{
 
   return (
     <LexicalEditorContext.Provider value={getEditor}>
-      <div class={styles.LexicalComposer} ref={rootElement}>
-        {props.children}
-      </div>
+      <div class={styles.LexicalComposer}>{props.children}</div>
     </LexicalEditorContext.Provider>
   );
 };

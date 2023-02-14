@@ -19,7 +19,7 @@ const editorConfig = {
 };
 
 export const MarkdownEditor: Component = () => {
-  const [markdown, setMarkdown] = createSignal(`
+  const [getMarkdown, setMarkdown] = createSignal(`
 Таблица 1:
 
 | шапка 1 | шапка 2 | шапка 3 |
@@ -29,20 +29,19 @@ export const MarkdownEditor: Component = () => {
 
 Таблица 2:
 
-
 | шапка 4 | шапка 5 | шапка 6 |
 |---------|---------|---------|
 | ё       | ж       | и       |
   `);
 
   createEffect(() => {
-    console.log(markdown());
+    console.log(getMarkdown());
   });
 
   return (
     <LexicalComposer initialConfig={editorConfig}>
       <LexicalEditableContent />
-      <MarkdownPlugin value={markdown()} onChange={setMarkdown} />
+      <MarkdownPlugin value={getMarkdown()} onChange={setMarkdown} />
       <TablePlugin />
     </LexicalComposer>
   );
