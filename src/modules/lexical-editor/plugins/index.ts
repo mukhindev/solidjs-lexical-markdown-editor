@@ -1,3 +1,3 @@
-export * from "./MarkdownInputPlugin";
-export * from "./MarkdownOutputPlugin";
+export * from "./MarkdownPlugin";
 export * from "./MarkdownTransformers";
+export * from "./TablePlugin";

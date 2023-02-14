@@ -1,18 +1,25 @@
 import { Component, onMount } from "solid-js";
-import { $convertToMarkdownString } from "@lexical/markdown";
+import {
+  $convertFromMarkdownString,
+  $convertToMarkdownString,
+} from "@lexical/markdown";
 
 import { useLexicalEditor } from "../LexicalComposer";
 
 import { MARKDOWN_TRANSFORMERS } from "./MarkdownTransformers";
 
-export const MarkdownOutputPlugin: Component<{
+export const MarkdownPlugin: Component<{
   value: string;
   onChange: (markdown: string, isUpdated?: boolean) => void;
 }> = (props) => {
-  const editor = useLexicalEditor();
+  const getEditor = useLexicalEditor();
 
   onMount(() => {
-    editor?.().registerUpdateListener(({ editorState }) => {
+    getEditor()?.update(() => {
+      $convertFromMarkdownString(props.value, MARKDOWN_TRANSFORMERS);
+    });
+
+    getEditor()?.registerUpdateListener(({ editorState }) => {
       editorState.read(() => {
         const markdown = $convertToMarkdownString(MARKDOWN_TRANSFORMERS);
 

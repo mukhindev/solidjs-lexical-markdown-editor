@@ -5,6 +5,7 @@ export const markdownEditorTheme = {
   // rtl: "rtl",
   // placeholder: "editor-placeholder",
   paragraph: styles.Paragraph,
+  table: styles.Table,
   // quote: "editor-quote",
   // heading: {
   //   h1: "editor-heading-h1",

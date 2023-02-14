@@ -6,10 +6,10 @@ export const LexicalEditableContent: Component = () => {
   let ref: HTMLDivElement;
   let isEditable = true;
 
-  const editor = useLexicalEditor();
+  const getEditor = useLexicalEditor();
 
   onMount(() => {
-    editor?.().setRootElement(ref);
+    getEditor()?.setRootElement(ref);
   });
 
   return <div contentEditable={isEditable} ref={ref} />;

@@ -14,21 +14,23 @@ import { mergeRegister } from "@lexical/utils";
 
 import styles from "./LexicalComposer.module.scss";
 
-export const LexicalEditorContext = createContext<Accessor<LexicalEditor>>();
+export const LexicalEditorContext = createContext<
+  Accessor<LexicalEditor | undefined>
+>(() => undefined);
 
 export const LexicalComposer: Component<{
   initialConfig: EditorConfig;
   children: JSX.Element;
 }> = (props) => {
   let rootElement: HTMLDivElement;
-  const [editor] = createSignal(createEditor(props.initialConfig));
+  const [getEditor] = createSignal(createEditor(props.initialConfig));
 
   onMount(() => {
-    mergeRegister(registerRichText(editor()));
+    mergeRegister(registerRichText(getEditor()));
   });
 
   return (
-    <LexicalEditorContext.Provider value={editor}>
+    <LexicalEditorContext.Provider value={getEditor}>
       <div class={styles.LexicalComposer} ref={rootElement}>
         {props.children}
       </div>
